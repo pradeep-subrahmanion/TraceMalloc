@@ -1,3 +1,14 @@
-TraceMalloc
------------
+
+BUILD
+-----
+
+Run build.sh
+
+
+USAGE
+-----
+
+tracemalloc <build command>
+
+eg: tracemalloc gcc test.c
 
