@@ -70,7 +70,7 @@ int main(int argc,char *argv[])
 {
 	
 	
-	char *build_command = NULL;
+	char build_command[1024];
 	
 	if(argc==1)
 	{
@@ -93,7 +93,7 @@ int main(int argc,char *argv[])
 		
 		int len = strlen(arg);
 		
-		char *new_arg = arg;
+		char *new_arg = arg;               
 
 		if(strlen(arg)>2 && arg[len-1]=='c' && arg[len-2]=='.')
 		{
@@ -109,9 +109,8 @@ int main(int argc,char *argv[])
 		
 		
 		
-		if(build_command == NULL)
+		if(i==1)
 		{
-			build_command = malloc(sizeof(new_arg));
 						
 			strcpy(build_command,new_arg);		
 			
@@ -119,12 +118,12 @@ int main(int argc,char *argv[])
 		
 		else
 		{
-		
-			build_command = realloc(build_command,sizeof(build_command)+sizeof(new_arg)+1);
 			
 			strcat(build_command," ");
 			
 			strcat(build_command,new_arg);
+
+                       
 		}
 				
 		++i;
@@ -132,17 +131,15 @@ int main(int argc,char *argv[])
 	}
 
 	//link with trace malloc static lib
-	
 
-	build_command = realloc(build_command,sizeof(build_command)+27);
 	
 	strcat(build_command," -L $PWD -ltracemalloc -ldl");
 
 	//run the build command
 	
-    system(build_command);
+        system(build_command);
     
-	free(build_command);
+	//free(build_command);
     
 	return 0;
 }
