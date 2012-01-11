@@ -34,11 +34,8 @@ void tm_update_data(int line_number,const char *function_name,char *file_name)
 	strncpy(tm_file_name,file_name,strlen(file_name)-5);
 		
 	strcat(tm_file_name,".c");
-	
-	
-        // exclude comment lines added by tracemalloc
 
-	tm_line_number 	 = line_number- (offset * 4);
+	tm_line_number 	 = line_number;
 	
 	tm_function_name     = function_name;
 	

@@ -2,7 +2,7 @@
 BUILD
 -----
 
-Run build.sh
+type "make".This will build the static library(libtracemallo.a) and excutable (tracemalloc).
 
 
 USAGE

@@ -17,8 +17,10 @@ char * preprocess_file(char *file_name)
 	long file_size = 0;
 	
 	char str[200];
+
+        int size = strlen(file_name) + sizeof(char) *3;
 	
-	char *dest_file_name = malloc(sizeof(file_name-2) + 5);
+	char *dest_file_name = calloc(size,1);
 	
 	strncpy(dest_file_name,file_name,strlen(file_name)-2);
 	
@@ -27,7 +29,7 @@ char * preprocess_file(char *file_name)
 	FILE *source_fd = fopen(file_name,"r");
 	
 	FILE *dest_fd = fopen(dest_file_name,"w");
-	
+		
 	fprintf(dest_fd,"%s\n","#include \"allocation.h\"");
 	
 	//find the size of source file.
@@ -40,6 +42,8 @@ char * preprocess_file(char *file_name)
 	
 	int prev_seek_pos =  fseek(dest_fd, 0, SEEK_END);
 	
+	int offset=0;
+	
 	while(fgets(str,file_size,source_fd))
 	{
 
@@ -48,9 +52,13 @@ char * preprocess_file(char *file_name)
 		if(strstr(str,"malloc(") != NULL)
 		{
 			
+			offset++;
+			
+			int i =( offset * 4);
+			
 	        fprintf(dest_fd,"%s","/**\ntrace malloc addition for generating debug informations\n*/\n");
 			
-			fprintf(dest_fd,"%s\n","tm_update_data(__LINE__,__FUNCTION__,__FILE__);");
+			fprintf(dest_fd,"tm_update_data(__LINE__-%d,__FUNCTION__,__FILE__);\n",i);
 		}
 		
 		fprintf(dest_fd,"%s",str);
@@ -102,6 +110,7 @@ int main(int argc,char *argv[])
 			// show line number , function name and file name of leaked block.
 			//
 			
+                        printf("arg is %s\n",arg);
 			new_arg = preprocess_file(arg);
 		
 			
