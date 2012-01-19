@@ -109,8 +109,7 @@ int main(int argc,char *argv[])
 			// preprocess .c file to generate new file which includes additional code to
 			// show line number , function name and file name of leaked block.
 			//
-			
-                        printf("arg is %s\n",arg);
+
 			new_arg = preprocess_file(arg);
 		
 			
@@ -142,11 +141,11 @@ int main(int argc,char *argv[])
 	//link with trace malloc static lib
 
 	
-	strcat(build_command," -L $PWD -ltracemalloc -ldl");
+	 strcat(build_command," -L $PWD -ltracemalloc -ldl");
 
 	//run the build command
 	
-        system(build_command);
+   	 system(build_command);
     
 	//free(build_command);
     

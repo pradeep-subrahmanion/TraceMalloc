@@ -25,11 +25,9 @@ bool       registered_exit ;
 void tm_update_data(int line_number,const char *function_name,char *file_name)
 {
 	
-	static int offset=1;
+	//remove _tm from file name
 	
 	tm_file_name =(char *) sbrk(strlen(file_name)-3);
-	
-        //remove _tm from file name
 	
 	strncpy(tm_file_name,file_name,strlen(file_name)-5);
 		
@@ -39,7 +37,7 @@ void tm_update_data(int line_number,const char *function_name,char *file_name)
 	
 	tm_function_name     = function_name;
 	
-	offset++;
+
 	
 }
 
@@ -50,23 +48,23 @@ void tm_update_data(int line_number,const char *function_name,char *file_name)
 void * malloc(size_t size)
 {
 
-   //allocate memory 
+    //allocate memory 
 	
-   void *ptr = sbrk(size);
+	void *ptr = sbrk(size);
 
-   //register allocation
+    //register allocation
    
-   add_allocation_node(ptr,tm_line_number,size,tm_file_name,tm_function_name);
+    add_allocation_node(ptr,tm_line_number,size,tm_file_name,tm_function_name);
    
    
-   if(!registered_exit)
-   {
+	if(!registered_exit)
+	{
 	   //at exit of the program , report leaked blocks
 	   
 	   atexit(report_allocations);
 	   
 	   registered_exit = true;
-   }
+    }
    
    return ptr;
 }

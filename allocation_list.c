@@ -150,10 +150,10 @@ void remove_allocation_node(void * address)
 void write_to_file(int fd, struct allocation_node *it)
 {
 
-       char *mem = sbrk(8);
-       char *size = sbrk(8);           
-       tochar(it->allocation_data->line_number,mem);
-       tochar(it->allocation_data->size,size);
+        char *mem = sbrk(8);
+        char *size = sbrk(8);           
+        tochar(it->allocation_data->line_number,mem);
+        tochar(it->allocation_data->size,size);
   		     
         write(fd,it->allocation_data->file_name,wrapper_strlen(it->allocation_data->file_name));
         write(fd,"\t",1);
@@ -181,7 +181,7 @@ void report_allocations()
    struct allocation_node *prev_node = NULL;
 
    write(fd,"FILE\t\tFUNCTION\tLINENO\tSIZE\n--------------------------------------------\n",72);
-   
+   write(1,"FILE\t\tFUNCTION\tLINENO\tSIZE\n--------------------------------------------\n",72);
    while (it != NULL) 
     {
 
@@ -191,7 +191,7 @@ void report_allocations()
   
         //write to stdout
 
-	write_to_file(1,it);
+	    write_to_file(1,it);
 
         it=it->link;
 
