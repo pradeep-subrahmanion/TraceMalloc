@@ -2,7 +2,7 @@
 BUILD
 -----
 
-type "make".This will build the static library(libtracemallo.a) and excutable (tracemalloc).
+type "make".This will build the static library(libtracemalloc.a) and excutable (tracemalloc).
 
 
 USAGE
