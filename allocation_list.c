@@ -66,8 +66,7 @@ void add_allocation_node(void * address,int line_no,size_t size,char *file_name,
   struct allocation_node *temp =  (struct allocation_node *) sbrk(sizeof(struct allocation_node));
   if(first_node != NULL) {
     temp->link = first_node;
-  }
-  else {
+  } else {
     temp->link = NULL;
   }
   
@@ -92,11 +91,9 @@ void remove_allocation_node(void * address)
         void * _address = it->allocation_data->address;
         if(_address == address) {
         	
-        	if(prev_node == NULL) {
-        	  
+        	if(prev_node == NULL) {       	  
         		first_node = it->link;
-        	}
-        	else {         
+        	} else {         
         		prev_node->link = it->link;
         	}        	
           break;

@@ -1,3 +1,11 @@
+/*
+ *  TRACEMALLOC
+ * 
+ *  Author: Pradeep Subrahmanion
+ * 
+ *  Date  :  4/1/2012
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,7 +65,7 @@ int main(int argc,char *argv[])
 		char *arg = argv[i];	
 		int len = strlen(arg);
 		char *new_arg = arg;               
-		if(strlen(arg)>2 && arg[len-1]=='c' && arg[len-2]=='.'){
+		if(strlen(arg)>2 && arg[len-1]=='c' && arg[len-2]=='.') {
 			/*
 			 * preprocess .c file to generate new file which includes additional code to
 			 * show line number , function name and file name of leaked block.
@@ -66,10 +74,9 @@ int main(int argc,char *argv[])
 			new_arg = preprocess_file(arg);
 		}
 		
-		if(i==1){
+		if(i==1) {
 			strcpy(build_command,new_arg);		
-		}
-		else{
+		} else {
 			strcat(build_command," ");
 			strcat(build_command,new_arg);
 		}			
@@ -78,7 +85,5 @@ int main(int argc,char *argv[])
 	
 	 strcat(build_command," -L $PWD -ltracemalloc -ldl"); /* link with trace malloc static lib */
    	 system(build_command); /* run the build command */ 
-	//free(build_command);
-    
-	return 0;
+	 return 0;
 }
