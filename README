@@ -1,3 +1,7 @@
+INTRODUCTION
+------------
+
+  Tracemalloc is a tool used to detect memory leaks caused by 'malloc' call.It generates report about each leaked allocation which gives details such as bytes leaked , file name, function name, line number etc.
 
 BUILD
 -----

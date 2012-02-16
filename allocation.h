@@ -1,25 +1,16 @@
 #include <stdio.h>
 
-
-/**
+/*
  * This structure holds information about each allocation.
  */
 
 struct allocation 
 {
-
-      void  * address;
-      
-      char  *file_name;
-      
-      const char  *function_name ;
-
-      int   line_number;
-
-      size_t   size;
-
-     
-
+	void  * address;      
+    char  *file_name;      
+    const char  *function_name ;
+    int   line_number;
+    size_t   size;
 };
 
  void add_allocation_node(void * address,int line_no,size_t size,char *file_name,const char *function_name);
