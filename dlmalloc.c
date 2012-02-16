@@ -4519,7 +4519,6 @@ static void* tmalloc_small(mstate m, size_t nb) {
 
 void* dlmalloc(size_t bytes) {
 
-printf("dadada");
   /*
      Basic algorithm:
      If a small request (< 256 bytes minus per-chunk overhead):
