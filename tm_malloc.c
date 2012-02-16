@@ -1,13 +1,24 @@
+/*
+ *  TRACEMALLOC
+ * 
+ *  Author: Pradeep Subrahmanion
+ * 
+ *  Date  :  1/1/2012
+ */
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
-#include "allocation.h"
 #include <malloc.h>
 #include <unistd.h>
 #include <stdbool.h>
 #include <string.h>
+#include "allocation.h"
 
-#define _GNU_SOURCE
+void *dlmalloc(size_t size);
+
+
 
 int 	   tm_line_number     = 0;
 const char *tm_function_name  = "";
@@ -20,7 +31,7 @@ bool       registered_exit ;
 
 void tm_update_data(int line_number,const char *function_name,char *file_name)
 {
-	tm_file_name =(char *) sbrk(strlen(file_name)-3); /*remove _tm from file name*/
+    tm_file_name =(char *) sbrk(strlen(file_name)-3); /*remove _tm from file name*/
 	strncpy(tm_file_name,file_name,strlen(file_name)-5);
 	strcat(tm_file_name,".c");
     tm_line_number 	 = line_number;
@@ -34,7 +45,7 @@ void tm_update_data(int line_number,const char *function_name,char *file_name)
 
 void * malloc(size_t size)
 {
-	void *ptr = sbrk(size);  /*allocate memory */    
+	void *ptr = dlmalloc(size);  /*allocate memory */    
     add_allocation_node(ptr,tm_line_number,size,tm_file_name,tm_function_name); /*register allocation*/
 	if(!registered_exit) {
 	   atexit(report_allocations); /*at exit of the program , report leaked blocks*/
@@ -50,17 +61,17 @@ void * malloc(size_t size)
 void free(void * ptr)
 {
   remove_allocation_node(ptr); /* remove allocation from register*/
-  sbrk(-(sizeof(*ptr)));       /* deallocate memory */
+  dlfree(ptr);        /* deallocate memory */
 }
 
 /* 
  * This method calls free from  libc 
  * NOT USED NOW
  */
-
+#if 0
 void  std_free(void * ptr)
 {
-	char *error;
+    char *error;
     void  (*std_free_ptr)(void *);
     dlerror();
    *(void **)(&std_free_ptr) = dlsym(RTLD_NEXT,"free");
@@ -70,3 +81,4 @@ void  std_free(void * ptr)
     }  
     (*std_free_ptr)(ptr);
 }
+#endif
