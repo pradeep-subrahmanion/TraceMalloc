@@ -35,7 +35,7 @@ char *tochar(int i, char *p)
     return p;
 }
 
-/**
+/*
  *   function to get length of a string  without using any inbuilt function 
  */
 
@@ -69,7 +69,19 @@ void add_allocation_node(void * address,int line_no,size_t size,char *file_name,
   } else {
     temp->link = NULL;
   }
-  
+
+  /*
+   * If list already contains allocation with same line number , add size to it.
+   */
+  struct allocation_node *it = first_node;
+  while (it != NULL) {	  
+  	if(it->allocation_data->line_number == line_no) {
+    	it->allocation_data->size += size;
+        return;
+    }    
+    it = it->link;
+  }
+
   temp->allocation_data = (struct allocation *) sbrk(sizeof(struct allocation));
   temp->allocation_data->address = address;
   temp->allocation_data->line_number = line_no;
