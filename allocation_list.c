@@ -122,7 +122,7 @@ void remove_allocation_node(void * address)
 
 void write_to_file(int fd, struct allocation_node *it)
 {
-	char *mem = sbrk(8);
+    char *mem = sbrk(8);
     char *size = sbrk(8);
     tochar(it->allocation_data->line_number,mem);
     tochar(it->allocation_data->size,size);
