@@ -12,6 +12,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+void *dlmalloc(size_t size);
+void  dlfree(void*);
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 // some utility functions
 //
@@ -63,7 +66,7 @@ struct allocation_node *first_node = NULL;
  */
 void add_allocation_node(void * address,int line_no,size_t size,char *file_name,const char *function_name)
 {
-    struct allocation_node *temp =  (struct allocation_node *) sbrk(sizeof(struct allocation_node));
+    struct allocation_node *temp =  (struct allocation_node *) dlmalloc(sizeof(struct allocation_node));
     if(first_node != NULL) {
         temp->link = first_node;
     } else {
@@ -82,7 +85,7 @@ void add_allocation_node(void * address,int line_no,size_t size,char *file_name,
         it = it->link;
     }
     
-    temp->allocation_data = (struct allocation *) sbrk(sizeof(struct allocation));
+    temp->allocation_data = (struct allocation *) dlmalloc(sizeof(struct allocation));
     temp->allocation_data->address = address;
     temp->allocation_data->line_number = line_no;
     temp->allocation_data->size = size;
@@ -108,6 +111,7 @@ void remove_allocation_node(void * address)
         	} else {
         		prev_node->link = it->link;
         	}
+            dlfree(it);
             break;
         }
         prev_node = it;
@@ -122,8 +126,8 @@ void remove_allocation_node(void * address)
 
 void write_to_file(int fd, struct allocation_node *it)
 {
-    char *mem = sbrk(8);
-    char *size = sbrk(8);
+    char *mem = dlmalloc(8);
+    char *size = dlmalloc(8);
     tochar(it->allocation_data->line_number,mem);
     tochar(it->allocation_data->size,size);
     write(fd,it->allocation_data->file_name,wrapper_strlen(it->allocation_data->file_name));
