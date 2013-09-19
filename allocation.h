@@ -14,8 +14,8 @@
 
 struct allocation 
 {
-	void  * address;      
-    char  *file_name;      
+    void  * address;
+    char  *file_name;
     const char  *function_name ;
     int   line_number;
     size_t   size;
